@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #0f2027;
+    color: white;
+}
+
+header {
+    padding: 20px;
+    font-size: 24px;
+    background: linear-gradient(90deg, #203a43, #2c5364);
+}
+
+.container {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+.camera, .output {
+    flex: 1;
+    background: #203a43;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 14px;
+    width: 100%;
+    font-size: 16px;
+    background: #00c6ff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}

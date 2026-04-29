@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartSign AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>🤟 SmartSign AI</header>
+
+<div class="container">
+    <div class="camera">
+        <h3>Live Camera</h3>
+        <img src="/video_feed">
+    </div>
+
+    <div class="output">
+        <h3>Translation Output</h3>
+        <p id="detected">Detected Text: —</p>
+        <p id="sentence">AI Sentence: —</p>
+        <button onclick="finalize()">Generate & Speak</button>
+    </div>
+</div>
+
+<script>
+function finalize(){
+    fetch("/finalize")
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("detected").innerText =
+            "Detected Text: " + data.detected;
+        document.getElementById("sentence").innerText =
+            "AI Sentence: " + data.sentence;
+    });
+}
+</script>
+
+</body>
+</html>
