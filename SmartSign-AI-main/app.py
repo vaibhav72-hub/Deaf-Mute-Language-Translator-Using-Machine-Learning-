@@ -1,9 +1,11 @@
 import cv2
+import gc
+from utils.threaded_camera import ThreadedCamera
 from sign_to_text.realtime_predict import predict_from_roi
 from ai_ollama.sentence_builder import build_sentence
 from text_to_speech.speak import speak
 
-cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+cap = ThreadedCamera(src=0, width=640, height=480).start()
 
 detected_text = ""
 current_letter = ""
@@ -11,10 +13,14 @@ current_letter = ""
 print("Controls:")
 print("A = accept letter | S = space | D = delete | Q = quit & speak")
 
+frame_count = 0
+
 while True:
     ret, frame = cap.read()
-    if not ret:
-        break
+    if not ret or frame is None:
+        continue
+
+    frame_count += 1
 
     h, w, _ = frame.shape
 
@@ -22,11 +28,12 @@ while True:
     x1, y1 = int(w * 0.55), int(h * 0.25)
     x2, y2 = int(w * 0.9), int(h * 0.75)
 
-    roi = frame[y1:y2, x1:x2]
-    letter = predict_from_roi(roi)
+    if frame_count % 2 == 0:
+        roi = frame[y1:y2, x1:x2]
+        letter = predict_from_roi(roi)
 
-    if letter:
-        current_letter = letter
+        if letter:
+            current_letter = letter
 
     # Draw UI
     cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
@@ -55,8 +62,11 @@ while True:
     elif key == ord('q'):             # Quit + Speak
         break
 
+    if frame_count % 30 == 0:
+        gc.collect()
+
 # 🔻 AFTER CAMERA LOOP
-cap.release()
+cap.stop()
 cv2.destroyAllWindows()
 
 # 🔊 FINAL OUTPUT
