@@ -43,6 +43,22 @@ function finalize(){
             "AI Sentence: " + data.sentence;
     });
 }
+
+document.addEventListener('keydown', function(event) {
+    const key = event.key.toLowerCase();
+    if (key === 'a') {
+        acceptLetter();
+    } else if (key === 'q') {
+        finalize();
+    } else if (key === 's' || key === 'd') {
+        fetch("/keypress/" + key, {method: "POST"})
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("detected").innerText =
+                "Detected Text: " + data.detected;
+        });
+    }
+});
 </script>
 
 </body>

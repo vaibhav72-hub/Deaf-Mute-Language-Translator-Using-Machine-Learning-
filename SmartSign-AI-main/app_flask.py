@@ -77,6 +77,16 @@ def accept():
         current_letter = ""
     return jsonify({"detected": detected_text})
 
+@app.route("/keypress/<key>", methods=["POST"])
+def keypress(key):
+    global detected_text
+    key = key.lower()
+    if key == 's':
+        detected_text += " "
+    elif key == 'd':
+        detected_text = detected_text[:-1]
+    return jsonify({"detected": detected_text})
+
 @app.route("/finalize")
 def finalize():
     global detected_text
