@@ -1,7 +1,7 @@
 import cv2
 import mediapipe as mp
 
-mp_hands = mp.solutions.hands
+mp_hands = mp.solutions.hands if hasattr(mp, 'solutions') else mp.python.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.5)
 
 def predict_from_roi(roi):
