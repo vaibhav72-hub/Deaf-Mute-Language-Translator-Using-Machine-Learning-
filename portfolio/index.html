@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSign AI | Portfolio Showcase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Mediapipe Tasks Vision -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="blob-bg"></div>
+
+    <header class="glass-header">
+        <div class="logo">SmartSign <span>AI</span></div>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#demo">Live Demo</a>
+            <a href="https://github.com/vaibhav72-hub/Deaf-Mute-Language-Translator-Using-Machine-Learning-" target="_blank" class="btn-primary">View on GitHub</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Bridging the Communication Gap with <span>Computer Vision</span></h1>
+            <p>SmartSign AI is an advanced, real-time Deaf-Mute Language Translator that turns American Sign Language gestures into spoken text instantly.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn-primary">Try the Demo</a>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="feature-card glass-card">
+                <div class="icon">🖐️</div>
+                <h3>Real-Time Tracking</h3>
+                <p>Utilizes Mediapipe Hand Landmarks to track 21 3D finger joints with ultra-low latency.</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">⚡</div>
+                <h3>Heuristic Engine</h3>
+                <p>Mathematically calculates vector distances to robustly identify complex ASL signs.</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🔊</div>
+                <h3>Text-to-Speech</h3>
+                <p>Constructs sentences dynamically and reads them out loud for seamless conversation.</p>
+            </div>
+        </section>
+
+        <section id="demo" class="demo-section">
+            <h2>Interactive <span>Live Demo</span></h2>
+            <p>Test the ASL gesture tracker right in your browser! Please allow camera access.</p>
+            
+            <div class="app-container glass-card">
+                <div class="video-wrapper">
+                    <video id="webcam" autoplay playsinline></video>
+                    <canvas class="output_canvas" id="output_canvas"></canvas>
+                    <div id="loader" class="loader">Loading AI Model...</div>
+                </div>
+
+                <div class="controls">
+                    <div class="status-box">
+                        <p class="label">Current Sign:</p>
+                        <h1 id="currentLetter">-</h1>
+                    </div>
+                    
+                    <div class="sentence-builder">
+                        <p class="label">Sentence Builder:</p>
+                        <h2 id="detectedText"></h2>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="acceptBtn" class="btn-action">Accept Letter (A)</button>
+                        <button id="spaceBtn" class="btn-action">Space (S)</button>
+                        <button id="deleteBtn" class="btn-action btn-danger">Delete (D)</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Built by Vaibhav. Powered by Mediapipe.</p>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
