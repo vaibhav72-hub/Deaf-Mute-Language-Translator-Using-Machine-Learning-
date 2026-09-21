@@ -18,11 +18,21 @@
         <h3>Translation Output</h3>
         <p id="detected">Detected Text: —</p>
         <p id="sentence">AI Sentence: —</p>
+        <button onclick="acceptLetter()">Accept Letter</button>
         <button onclick="finalize()">Generate & Speak</button>
     </div>
 </div>
 
 <script>
+function acceptLetter(){
+    fetch("/accept", {method: "POST"})
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("detected").innerText =
+            "Detected Text: " + data.detected;
+    });
+}
+
 function finalize(){
     fetch("/finalize")
     .then(res => res.json())

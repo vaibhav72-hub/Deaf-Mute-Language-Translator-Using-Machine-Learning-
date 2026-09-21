@@ -24,16 +24,18 @@ def build_sentence(text):
         "Output:"
     )
 
-    result = subprocess.run(
-        ["ollama", "run", "mistral"],
-        input=prompt,
-        text=True,
-        encoding="utf-8",
-        errors="ignore",
-        capture_output=True
-    )
-
-    output = result.stdout.strip()
-
-    # 🛡️ Safety fallback
-    return output if output else text
+    try:
+        result = subprocess.run(
+            ["ollama", "run", "mistral"],
+            input=prompt,
+            text=True,
+            encoding="utf-8",
+            errors="ignore",
+            capture_output=True
+        )
+        output = result.stdout.strip()
+        # 🛡️ Safety fallback
+        return output if output else text
+    except FileNotFoundError:
+        # If Ollama is not installed or not in PATH, just return the text
+        return text

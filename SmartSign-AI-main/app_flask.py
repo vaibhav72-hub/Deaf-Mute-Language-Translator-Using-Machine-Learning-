@@ -64,6 +64,19 @@ def video_feed():
                     mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
+@app.route("/accept", methods=["POST"])
+def accept():
+    global detected_text, current_letter
+    if current_letter:
+        if current_letter == "DEL":
+            detected_text = detected_text[:-1]
+        elif current_letter == "SPACE":
+            detected_text += " "
+        else:
+            detected_text += current_letter
+        current_letter = ""
+    return jsonify({"detected": detected_text})
+
 @app.route("/finalize")
 def finalize():
     global detected_text
