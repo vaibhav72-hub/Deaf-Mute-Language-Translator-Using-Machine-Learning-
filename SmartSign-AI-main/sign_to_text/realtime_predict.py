@@ -27,21 +27,25 @@ def predict_from_roi(roi):
         return ""
         
     landmarks = result.hand_landmarks[0]
+    wrist = landmarks[0]
+    
+    def dist(lm1, lm2):
+        return np.sqrt((lm1.x - lm2.x)**2 + (lm1.y - lm2.y)**2)
     
     # Finger states: True if open/straight, False if curled
-    # For index to pinky, we check if the tip is higher than the pip joint
+    # We now check if the tip is further from the wrist than the pip joint!
     fingers_open = [
-        landmarks[8].y < landmarks[6].y,   # Index
-        landmarks[12].y < landmarks[10].y, # Middle
-        landmarks[16].y < landmarks[14].y, # Ring
-        landmarks[20].y < landmarks[18].y  # Pinky
+        dist(wrist, landmarks[8]) > dist(wrist, landmarks[6]),   # Index
+        dist(wrist, landmarks[12]) > dist(wrist, landmarks[10]), # Middle
+        dist(wrist, landmarks[16]) > dist(wrist, landmarks[14]), # Ring
+        dist(wrist, landmarks[20]) > dist(wrist, landmarks[18])  # Pinky
     ]
     
-    # Thumb state is trickier (depends on hand orientation, but we'll use a basic distance heuristic)
-    thumb_open = landmarks[4].x < landmarks[3].x if landmarks[17].x > landmarks[5].x else landmarks[4].x > landmarks[3].x
+    # Thumb state: check if thumb tip is further from pinky base than its IP joint
+    thumb_open = dist(landmarks[4], landmarks[17]) > dist(landmarks[3], landmarks[17])
     
     # Calculate distance between thumb tip and index tip for letters like F, O
-    thumb_index_dist = np.sqrt((landmarks[4].x - landmarks[8].x)**2 + (landmarks[4].y - landmarks[8].y)**2)
+    thumb_index_dist = dist(landmarks[4], landmarks[8])
     
     # ASL Heuristics Mapping
     if thumb_index_dist < 0.05 and all(fingers_open[1:]): 
