@@ -27,6 +27,15 @@ def generate_frames():
     while True:
         ret, frame = camera.read()
         if not ret or frame is None:
+            import numpy as np
+            import time
+            blank = np.zeros((480, 640, 3), dtype=np.uint8)
+            cv2.putText(blank, "Error: Camera in use or not found", (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+            cv2.putText(blank, "Close other demo tabs and restart", (50, 280), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0,0,255), 2)
+            _, buffer = cv2.imencode(".jpg", blank)
+            yield (b"--frame\r\n"
+                   b"Content-Type: image/jpeg\r\n\r\n" + buffer.tobytes() + b"\r\n")
+            time.sleep(1)
             continue
             
         frame_count += 1
