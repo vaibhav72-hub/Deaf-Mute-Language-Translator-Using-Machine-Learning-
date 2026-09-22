@@ -1,65 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SmartSign AI</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSign AI | Portfolio Showcase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div class="blob-bg"></div>
 
-<header>🤟 SmartSign AI</header>
+    <header class="glass-header">
+        <div class="logo">SmartSign <span>AI</span></div>
+        <nav>
+            <a href="#features">Features</a>
+            <a href="#demo">Live Demo</a>
+            <a href="https://github.com/vaibhav72-hub/Deaf-Mute-Language-Translator-Using-Machine-Learning-" target="_blank" class="btn-primary">View on GitHub</a>
+        </nav>
+    </header>
 
-<div class="container">
-    <div class="camera">
-        <h3>Live Camera</h3>
-        <img src="/video_feed">
-    </div>
+    <main>
+        <section class="hero">
+            <h1>Bridging the Communication Gap with <span>Computer Vision</span></h1>
+            <p>SmartSign AI is an advanced, real-time Deaf-Mute Language Translator that turns American Sign Language gestures into spoken text instantly.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn-primary">Try the Demo</a>
+            </div>
+        </section>
 
-    <div class="output">
-        <h3>Translation Output</h3>
-        <p id="detected">Detected Text: —</p>
-        <p id="sentence">AI Sentence: —</p>
-        <button onclick="acceptLetter()">Accept Letter</button>
-        <button onclick="finalize()">Generate & Speak</button>
-    </div>
-</div>
+        <section id="features" class="features">
+            <div class="feature-card glass-card">
+                <div class="icon">🖐️</div>
+                <h3>Real-Time Tracking</h3>
+                <p>Utilizes Mediapipe Hand Landmarks to track 21 3D finger joints with ultra-low latency.</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">⚡</div>
+                <h3>Heuristic Engine</h3>
+                <p>Mathematically calculates vector distances to robustly identify complex ASL signs.</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon">🔊</div>
+                <h3>Text-to-Speech</h3>
+                <p>Constructs sentences dynamically and reads them out loud for seamless conversation.</p>
+            </div>
+        </section>
 
-<script>
-function acceptLetter(){
-    fetch("/accept", {method: "POST"})
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("detected").innerText =
-            "Detected Text: " + data.detected;
-    });
-}
+        <section id="demo" class="demo-section">
+            <h2>Interactive <span>Live Demo</span></h2>
+            <p>Test the ASL gesture tracker right in your browser! Please allow camera access.</p>
+            
+            <div class="app-container glass-card">
+                <div class="video-wrapper">
+                    <img id="webcam" src="/video_feed" style="width: 100%; border-radius: 12px; object-fit: cover;">
+                </div>
 
-function finalize(){
-    fetch("/finalize")
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("detected").innerText =
-            "Detected Text: " + data.detected;
-        document.getElementById("sentence").innerText =
-            "AI Sentence: " + data.sentence;
-    });
-}
+                <div class="controls">
+                    <div class="status-box">
+                        <p class="label">Current Sign:</p>
+                        <h1 id="currentLetter">-</h1>
+                    </div>
+                    
+                    <div class="sentence-builder">
+                        <p class="label">Sentence Builder:</p>
+                        <h2 id="detectedText"></h2>
+                    </div>
 
-document.addEventListener('keydown', function(event) {
-    const key = event.key.toLowerCase();
-    if (key === 'a') {
-        acceptLetter();
-    } else if (key === 'q') {
-        finalize();
-    } else if (key === 's' || key === 'd') {
-        fetch("/keypress/" + key, {method: "POST"})
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById("detected").innerText =
-                "Detected Text: " + data.detected;
-        });
-    }
-});
-</script>
+                    <div class="button-group">
+                        <button id="acceptBtn" class="btn-action">Accept Letter (A)</button>
+                        <button id="spaceBtn" class="btn-action">Space (S)</button>
+                        <button id="deleteBtn" class="btn-action btn-danger">Delete (D)</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
+    <footer>
+        <p>Built by Vaibhav. Powered by Mediapipe.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

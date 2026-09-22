@@ -99,7 +99,12 @@ def finalize():
     }
     detected_text = ""
     return jsonify(response)
-
+@app.route("/status")
+def status():
+    return jsonify({
+        "current_letter": current_letter,
+        "detected_text": detected_text
+    })
 
 if __name__ == "__main__":
     app.run(debug=False)
